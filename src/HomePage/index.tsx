@@ -24,6 +24,8 @@ const { Header, Sider, Content } = Layout;
 const Page2 = () => <div>这是未定画面1的内容</div>;
 const Page3 = () => <div>这是未定画面2的内容</div>;
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const App: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -33,11 +35,8 @@ const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const handleLogin = async (values: any) => {
-    console.log("Success:", values);
-    const res: any = await axios.post(
-      "http://localhost:5000/api/login",
-      values
-    );
+    console.log("Success:", values, API_URL);
+    const res: any = await axios.post(`${API_URL}/api/login`, values);
     console.log(res, "res");
     if (res.data.user) {
       message.success(res.data.message);

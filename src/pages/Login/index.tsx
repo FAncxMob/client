@@ -24,7 +24,7 @@ import type { TableProps } from "antd";
 import type { FormProps } from "antd";
 import "./index.css";
 const { Sider, Content } = Layout;
-
+const API_URL = process.env.REACT_APP_API_URL;
 type FieldType = {
   userId?: string;
   password?: string;

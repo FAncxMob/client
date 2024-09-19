@@ -18,7 +18,7 @@ import {
 import type { TableProps } from "antd";
 import type { FormProps } from "antd";
 const { Sider, Content } = Layout;
-
+const API_URL = process.env.REACT_APP_API_URL;
 interface DataType {
   fromUser: string;
   message: string;
@@ -51,12 +51,9 @@ const Lobby: React.FC = () => {
   const fetchMyMessage = async () => {
     const userStr = sessionStorage.getItem("user") ?? "";
     const user = JSON.parse(userStr);
-    const response = await axios.post(
-      "http://localhost:5000/api/fetchMyMessage",
-      {
-        toUserId: user.userId,
-      }
-    );
+    const response = await axios.post(`${API_URL}/api/fetchMyMessage`, {
+      toUserId: user.userId,
+    });
 
     setMessagesToMe(
       response.data.map((user: DataType, index: any) => ({
@@ -68,7 +65,7 @@ const Lobby: React.FC = () => {
 
   // 获取数据
   const fetchUserData = async () => {
-    const response = await axios.get("http://localhost:5000/api/getUserList");
+    const response = await axios.get(`${API_URL}/api/getUserList`);
     // 为每个用户项添加唯一的 key
 
     setUserList(
@@ -128,7 +125,7 @@ const Lobby: React.FC = () => {
 
     const userStr = sessionStorage.getItem("user") ?? "";
     const user = JSON.parse(userStr);
-    const res = await axios.post("http://localhost:5000/api/addMessage", {
+    const res = await axios.post(`${API_URL}/api/addMessage`, {
       fromUserId: user.userId,
       toUserId: values.toUserId,
       message: values.message,

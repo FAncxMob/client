@@ -16,7 +16,7 @@ import {
 import type { TableProps } from "antd";
 import type { FormProps } from "antd";
 const { Sider, Content } = Layout;
-
+const API_URL = process.env.REACT_APP_API_URL;
 interface DataType {
   userId: string;
   password: string;
@@ -34,7 +34,7 @@ const Lobby: React.FC = () => {
 
   // 获取数据
   const fetchData = async () => {
-    const response = await axios.get("http://localhost:5000/api/getUsers");
+    const response = await axios.get(`${API_URL}/api/getUsers`);
     // 为每个用户项添加唯一的 key
 
     setDataList(
@@ -75,7 +75,7 @@ const Lobby: React.FC = () => {
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     console.log("Success:", values);
-    await axios.post("http://localhost:5000/api/addUser", values);
+    await axios.post(`${API_URL}/api/addUser`, values);
     fetchData(); // 更新数据列表
   };
 
