@@ -95,6 +95,7 @@ type PaginationAlign = "start" | "center" | "end";
 const Novel = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [word, setWord] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [htmlContent, setHtmlContent] = useState("");
   const [novelList, setNovelList] = useState<any>([]);
@@ -122,6 +123,7 @@ const Novel = () => {
         st: current || 1,
         out: "json",
         order,
+        word,
       };
 
       // 调用函数拼接
@@ -152,7 +154,7 @@ const Novel = () => {
       <h1>API TEST</h1>
       <Select
         value={order}
-        style={{ width: 120 }}
+        style={{ width: 400 }}
         onChange={(value) => {
           setOrder(value);
         }}
@@ -177,7 +179,15 @@ const Novel = () => {
           { value: "old", label: "更新が古い順" },
         ]}
       />
-      <Button onClick={getNovel}>检索</Button>
+      <Input
+        value={word}
+        onChange={(e) => setWord(e.target.value)}
+        placeholder="Basic usage"
+      />
+
+      <Button style={{ width: 80 }} type="primary" onClick={getNovel}>
+        检索
+      </Button>
       <div></div>
       <div>
         {/* 固定的分页 */}

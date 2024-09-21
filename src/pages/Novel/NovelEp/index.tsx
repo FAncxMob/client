@@ -140,12 +140,12 @@ const NovelEp = () => {
                       );
                     }}
                   >
-                    {chapter.title}
+                    <span>{chapter.title}</span>
                   </a>
                 }
                 description={
                   <Typography.Text type="secondary">
-                    点击查看详细内容
+                    {chapter.updateDatetime}
                   </Typography.Text>
                 }
               />

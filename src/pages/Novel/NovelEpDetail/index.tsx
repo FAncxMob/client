@@ -55,6 +55,7 @@ const NovelEpDetail = () => {
   const [info, setInfo] = useState<any>({
     pArr1: [],
     pArr2: [],
+    pArr3: [],
   });
 
   // 解析查询参数
@@ -93,7 +94,7 @@ const NovelEpDetail = () => {
     const epTitle = $(".p-novel__title").text().trim();
     const pArr1: any = [];
     const pArr2: any = [];
-
+    const pArr3: any = [];
     $(".p-novel__text--preface p").each((i, element) => {
       const text = $(element).text().trim();
       pArr1.push(text);
@@ -101,7 +102,16 @@ const NovelEpDetail = () => {
       // chapters.push({ title: chapterTitle, link: chapterLink });
     });
 
-    $(".p-novel__text:not(.p-novel__text--preface) p").each((i, element) => {
+    $(
+      ".p-novel__text:not(.p-novel__text--preface):not(.p-novel__text--afterword) p"
+    ).each((i, element) => {
+      const text = $(element).text().trim();
+      pArr2.push(text);
+      console.log({ i, element, text }, "loopaaa");
+      // chapters.push({ title: chapterTitle, link: chapterLink });
+    });
+
+    $(".p-novel__text--afterword p").each((i, element) => {
       const text = $(element).text().trim();
       pArr2.push(text);
       console.log({ i, element, text }, "loopaaa");
@@ -113,6 +123,7 @@ const NovelEpDetail = () => {
       epTitle,
       pArr1,
       pArr2,
+      pArr3,
     });
 
     return {
@@ -134,13 +145,23 @@ const NovelEpDetail = () => {
             return <p>{str}</p>;
           })}
         </div>
+        {info.pArr1.length ? <hr /> : null}
+
         <div>
           {info.pArr2.map((str: string) => {
             console.log(str, "str");
             return <p>{str}</p>;
           })}
         </div>
-
+        <br />
+        {info.pArr3.length ? <hr /> : null}
+        <br />
+        <div>
+          {info.pArr3.map((str: string) => {
+            console.log(str, "str");
+            return <p>{str}</p>;
+          })}
+        </div>
         {/* <List
           itemLayout="horizontal"
           dataSource={info.chapters}
