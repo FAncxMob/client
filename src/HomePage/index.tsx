@@ -17,6 +17,7 @@ import {
 import Lobby from "../pages/Lobby/index";
 import AddUser from "../pages/AddUser/index";
 import Login from "../pages/Login/index";
+import Novel from "../pages/Novel/index";
 import axios from "axios";
 
 const { Header, Sider, Content } = Layout;
@@ -65,7 +66,7 @@ const App: React.FC = () => {
     {
       key: "3",
       icon: <UploadOutlined />,
-      label: <Link to="/page3">未定画面2</Link>, // 添加 Link
+      label: <Link to="/novel">なろう小説API</Link>, // 添加 Link
     },
   ];
 
@@ -78,12 +79,12 @@ const App: React.FC = () => {
     {
       key: "2",
       icon: <VideoCameraOutlined />,
-      label: <Link to="/page2">ユーザー追加</Link>, // 添加 Link
+      label: <Link to="/addUser">ユーザー追加</Link>, // 添加 Link
     },
     {
       key: "3",
       icon: <UploadOutlined />,
-      label: <Link to="/page3">未定画面2</Link>, // 添加 Link
+      label: <Link to="/novel">なろう小説API</Link>, // 添加 Link
     },
   ];
 
@@ -149,7 +150,8 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="*" element={<Navigate to="/lobby" />} />
                 <Route path="/lobby" element={<Lobby />} />
-                <Route path="/page2" element={<AddUser />} />
+                <Route path="/addUser" element={<AddUser />} />
+                <Route path="/novel" element={<Novel />} />
                 <Route path="/page3" element={<Page3 />} />
               </Routes>
             </Content>
