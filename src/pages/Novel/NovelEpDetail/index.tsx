@@ -76,6 +76,8 @@ const NovelEpDetail = () => {
       const result = formatHTML(res.data);
       setInfo(result);
       // console.log(result);
+    } else {
+      setInfo(res.data);
     }
     // if (res.data) {
     //   message.success(res.data.message);

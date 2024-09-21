@@ -67,11 +67,14 @@ const NovelEp = () => {
     const res = await axios.get(
       `${API_URL}/api/getNovelInfo?ncode=${ncode.current?.toLocaleLowerCase()}`
     );
+
     // 检查返回的内容类型
     if (res.headers["content-type"].includes("text/html")) {
       const result = formatHTML(res.data);
       setInfo(result);
       // console.log(result);
+    } else {
+      setInfo(res.data);
     }
     // if (res.data) {
     //   message.success(res.data.message);
