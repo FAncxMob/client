@@ -32,21 +32,19 @@ type FieldType = {
 };
 
 const Login: React.FC<any> = ({ onLogin }) => {
+  const navigate = useNavigate();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    onLogin(values);
-    // console.log("Success:", values);
-    // const res: any = await axios.post(
-    //   "http://localhost:5000/api/login",
-    //   values
-    // );
-    // console.log(res, "res");
-    // if (res.data.user) {
-    //   message.success(res.data.message);
-    //   sessionStorage.setItem("user", res.data.user); // 保存登录状态
-    //   navigate("/lobby"); // 登录后重定向到lobby页面
-    // } else {
-    //   message.error(res.data.message);
-    // }
+    // onLogin(values);
+    console.log("Success:", values);
+    const res: any = await axios.post(`${API_URL}/api/login`, values);
+    console.log(res, "res");
+    if (res.data.user) {
+      message.success(res.data.message);
+      sessionStorage.setItem("user", JSON.stringify(res.data.user)); // 保存登录状态
+      navigate("/lobby"); // 登录后重定向到lobby页面
+    } else {
+      message.error(res.data.message);
+    }
   };
 
   return (
@@ -55,7 +53,7 @@ const Login: React.FC<any> = ({ onLogin }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        // height: "100vh",
         background: "#f0f2f5",
       }}
     >

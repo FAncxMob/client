@@ -40,6 +40,7 @@
 .home-page {
   min-height: 100vh;
   overflow: hidden;
+
   /* display: flex; */
   /* flex-direction: column;
   justify-content: space-between;
@@ -54,4 +55,12 @@
 .content {
   height: 100%;
   overflow: auto;
+}
+
+@media only screen and (max-width: 768px) {
+  .ant-layout-content {
+    margin: 8px !important;
+    padding: 8px !important;
+    font-style: 16px !important;
+  }
 }

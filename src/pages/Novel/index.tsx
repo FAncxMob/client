@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
@@ -32,7 +39,7 @@ import {
   HddTwoTone,
 } from "@ant-design/icons";
 import { blueGrey } from "@mui/material/colors";
-
+import { buildUrlWithParams } from "../../utils/utils";
 const { Sider, Content } = Layout;
 const API_URL = process.env.REACT_APP_API_URL;
 interface DataType {
@@ -86,6 +93,8 @@ type PaginationPosition = "top" | "bottom" | "both";
 type PaginationAlign = "start" | "center" | "end";
 
 const Novel = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [htmlContent, setHtmlContent] = useState("");
   const [novelList, setNovelList] = useState<any>([]);
@@ -93,7 +102,10 @@ const Novel = () => {
   const [position, setPosition] = useState<PaginationPosition>("both");
   const [align, setAlign] = useState<PaginationAlign>("start");
   const [loading, setLoading] = useState(false);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(200);
+  const [order, setOrder] = useState("hyoka");
+
+  const currentPath = location.pathname; // 获取当前路径
   const positionOptions = ["top", "bottom", "both"];
 
   const alignOptions = ["start", "center", "end"];
@@ -103,9 +115,19 @@ const Novel = () => {
     setCurrentPage(current ?? 1);
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${API_URL}/api/getNovel?lim=${pageSize}&st=${current || 1}`
-      );
+
+      // 示例对象
+      const params = {
+        lim: pageSize,
+        st: current || 1,
+        out: "json",
+        order,
+      };
+
+      // 调用函数拼接
+      const url = buildUrlWithParams(`${API_URL}/api/getNovel`, params);
+
+      const res = await axios.get(url);
       setLoading(false);
 
       const arr = res.data;
@@ -128,56 +150,41 @@ const Novel = () => {
   return (
     <div className="novel">
       <h1>API TEST</h1>
+      <Select
+        value={order}
+        style={{ width: 120 }}
+        onChange={(value) => {
+          setOrder(value);
+        }}
+        options={[
+          { value: "new", label: "新着更新順" },
+          { value: "favnovelcnt", label: "ブックマーク数の多い順" },
+          { value: "reviewcnt", label: "レビュー数の多い順" },
+          { value: "hyoka", label: "総合ポイントの高い順" },
+          { value: "hyokaasc", label: "総合ポイントの低い順" },
+          { value: "dailypoint", label: "日間ポイントの高い順" },
+          { value: "weeklypoint", label: "週間ポイントの高い順" },
+          { value: "monthlypoint", label: "月間ポイントの高い順" },
+          { value: "quarterpoint", label: "四半期ポイントの高い順" },
+          { value: "yearlypoint", label: "年間ポイントの高い順" },
+          { value: "impressioncnt", label: "感想の多い順" },
+          { value: "hyokacnt", label: "評価者数の多い順" },
+          { value: "hyokacntasc", label: "評価者数の少ない順" },
+          { value: "weekly", label: "週間ユニークユーザの多い順" },
+          { value: "lengthdesc", label: "作品本文の文字数が多い順" },
+          { value: "lengthasc", label: "作品本文の文字数が少ない順" },
+          { value: "ncodedesc", label: "新着投稿順" },
+          { value: "old", label: "更新が古い順" },
+        ]}
+      />
       <Button onClick={getNovel}>检索</Button>
-      <div>
-        {/* <div>
-          <Space
-            direction="vertical"
-            style={{ marginBottom: "20px" }}
-            size="middle"
-          >
-            <Space>
-              <span>Pagination Position:</span>
-              <Radio.Group
-                optionType="button"
-                value={position}
-                onChange={(e) => {
-                  setPosition(e.target.value);
-                }}
-              >
-                {positionOptions.map((item) => (
-                  <Radio.Button key={item} value={item}>
-                    {item}
-                  </Radio.Button>
-                ))}
-              </Radio.Group>
-            </Space>
-            <Space>
-              <span>Pagination Align:</span>
-              <Radio.Group
-                optionType="button"
-                value={align}
-                onChange={(e) => {
-                  setAlign(e.target.value);
-                }}
-              >
-                {alignOptions.map((item) => (
-                  <Radio.Button key={item} value={item}>
-                    {item}
-                  </Radio.Button>
-                ))}
-              </Radio.Group>
-            </Space>
-          </Space>
-        </div> */}
-      </div>
+      <div></div>
       <div>
         {/* 固定的分页 */}
         <Pagination
           pageSize={pageSize}
-          // showQuickJumper
           current={currentPage}
-          total={allcount}
+          total={pageSize * 2000}
           onChange={(page) => {
             getNovel(page);
           }}
@@ -188,7 +195,7 @@ const Novel = () => {
           }}
         />
       </div>
-      <div style={{ flex: 1, overflow: "auto" }}>
+      <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden" }}>
         <List
           loading={loading}
           // bordered
@@ -228,7 +235,19 @@ const Novel = () => {
                 title={
                   <>
                     {item.isr15 ? <Tag color="pink">R15</Tag> : null}
-                    <a href="https://ant.design"> {item.title}</a>
+                    <a
+                      // href="/novelDetail"
+                      onClick={() => {
+                        const newWindowUrl = `${window.origin}/novelEp?ncode=${item.ncode}`; // 拼接前缀
+                        window.open(newWindowUrl, "_blank");
+
+                        // navigate("/novelDetail");
+                        // window.open("/novelDetail");
+                      }}
+                    >
+                      {" "}
+                      {item.title}
+                    </a>
                   </>
                 }
                 description={item.story}

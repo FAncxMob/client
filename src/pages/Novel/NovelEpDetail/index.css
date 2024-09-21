@@ -1,0 +1,31 @@
+.novelEpDetail {
+  font-family: "Arial", sans-serif; /* 使用清晰的无衬线字体 */
+  line-height: 1.6; /* 增加行间距 */
+  background-color: #f7f7f7; /* 温和的背景颜色 */
+  color: #333; /* 深色文本 */
+  margin: 0;
+  padding: 20px;
+}
+
+h1,
+h2,
+h3 {
+  color: #2c3e50; /* 标题颜色 */
+}
+
+.p-novel__text {
+  margin-bottom: 20px; /* 段落之间的间距 */
+}
+
+.p-novel__text--preface {
+  font-style: italic; /* 前言部分斜体 */
+  margin-bottom: 30px; /* 前言与正文间距 */
+}
+
+p {
+  margin: 0 0 15px; /* 段落的下边距 */
+}
+
+ruby {
+  font-size: 0.8em; /* 注音文字的字体大小 */
+}

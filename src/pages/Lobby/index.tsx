@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -30,7 +36,8 @@ type FieldType = {
   message?: string;
 };
 
-const Lobby: React.FC = () => {
+const Lobby = () => {
+  const navigate = useNavigate();
   const [messagesToMe, setMessagesToMe] = useState([]);
   const [userList, setUserList] = useState([]);
 
@@ -77,7 +84,11 @@ const Lobby: React.FC = () => {
   };
 
   useEffect(() => {
-    // testSession();
+    const userStr = sessionStorage.getItem("user") ?? "";
+    if (!userStr) {
+      navigate("/login");
+      return;
+    }
     fetchUserData();
     fetchMyMessage();
   }, []);
@@ -144,62 +155,70 @@ const Lobby: React.FC = () => {
   ) => {
     console.log("Failed:", errorInfo);
   };
+  const userStr = sessionStorage.getItem("user") ?? "";
 
   return (
     <div>
-      {" "}
-      <h1>りゅうたろう！頑張れ！</h1>
-      要望があったらここにメッセージを残してください
-      <div>
-        <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item<FieldType>
-            label="宛先"
-            name="toUserId"
-            rules={[{ required: true, message: "Please input your toUserId!" }]}
-          >
-            <Select
-              // defaultValue="lucy"
-              style={{ width: 120 }}
-              // onChange={handleChange}
-              options={userList}
-            />
-          </Form.Item>
+      {!userStr ? null : (
+        <div>
+          <h1>りゅうたろう！頑張れ！</h1>
+          要望があったらここにメッセージを残してください
+          <div>
+            <Form
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              style={{ maxWidth: 600 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item<FieldType>
+                label="宛先"
+                name="toUserId"
+                rules={[
+                  { required: true, message: "Please input your toUserId!" },
+                ]}
+              >
+                <Select
+                  // defaultValue="lucy"
+                  style={{ width: 120 }}
+                  // onChange={handleChange}
+                  options={userList}
+                />
+              </Form.Item>
 
-          <Form.Item<FieldType>
-            label="メッセージ内容"
-            name="message"
-            rules={[{ required: true, message: "Please input your message!" }]}
-          >
-            <Input.TextArea />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
+              <Form.Item<FieldType>
+                label="メッセージ内容"
+                name="message"
+                rules={[
+                  { required: true, message: "Please input your message!" },
+                ]}
+              >
+                <Input.TextArea />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+          <div>
+            <Button
+              style={{ marginRight: 5 }}
+              type="primary"
+              onClick={() => {
+                fetchMyMessage();
+              }}
+            >
+              リフレッシュ
             </Button>
-          </Form.Item>
-        </Form>
-      </div>
-      <div>
-        <Button
-          style={{ marginRight: 5 }}
-          type="primary"
-          onClick={() => {
-            fetchMyMessage();
-          }}
-        >
-          リフレッシュ
-        </Button>
-        <Table dataSource={messagesToMe} columns={columns} />;
-      </div>
+            <Table dataSource={messagesToMe} columns={columns} />;
+          </div>
+        </div>
+      )}
     </div>
   );
 };
