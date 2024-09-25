@@ -64,9 +64,10 @@ const NovelEp = () => {
   }, [location]);
 
   const getNovelInfo = async () => {
-    const res = await axios.get(
-      `${API_URL}/api/getNovelInfo?ncode=${ncode.current?.toLocaleLowerCase()}`
-    );
+    const res = await axios.get("https://ncode.syosetu.com/n2710db");
+    // const res = await axios.get(
+    //   `${API_URL}/api/getNovelInfo?ncode=${ncode.current?.toLocaleLowerCase()}`
+    // );
 
     // 检查返回的内容类型
     if (res.headers["content-type"].includes("text/html")) {
