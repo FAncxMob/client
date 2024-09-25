@@ -64,7 +64,12 @@ const NovelEp = () => {
   }, [location]);
 
   const getNovelInfo = async () => {
-    const res = await axios.get("https://ncode.syosetu.com/n2710db");
+    const res = await axios.get("https://ncode.syosetu.com/n2710db", {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+      },
+    });
     // const res = await axios.get(
     //   `${API_URL}/api/getNovelInfo?ncode=${ncode.current?.toLocaleLowerCase()}`
     // );

@@ -127,7 +127,13 @@ const Novel = () => {
       };
 
       // 调用函数拼接
-      const url = buildUrlWithParams(`${API_URL}/api/getNovel`, params);
+      // const url = buildUrlWithParams(`${API_URL}/api/getNovel`, params);
+      const url = buildUrlWithParams("https://api.syosetu.com/novelapi/api/", {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+        },
+      });
 
       const res = await axios.get(url);
       setLoading(false);
