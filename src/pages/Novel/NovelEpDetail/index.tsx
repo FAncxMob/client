@@ -145,7 +145,7 @@ const NovelEpDetail = () => {
             return <p>{str}</p>;
           })}
         </div>
-        {info.pArr1.length ? <hr /> : null}
+        {info.pArr1?.length ? <hr /> : null}
 
         <div>
           {info.pArr2.map((str: string) => {
@@ -154,10 +154,10 @@ const NovelEpDetail = () => {
           })}
         </div>
         <br />
-        {info.pArr3.length ? <hr /> : null}
+        {info.pArr3?.length ? <hr /> : null}
         <br />
         <div>
-          {info.pArr3.map((str: string) => {
+          {info.pArr3?.map((str: string) => {
             console.log(str, "str");
             return <p>{str}</p>;
           })}
